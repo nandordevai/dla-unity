@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Walker : MonoBehaviour
 {
-    GameObject dot;
-    float maxY = 20f;
+    public GameObject dot;
+    float areaSize = 10f;
+    Renderer r;
 
     void Start()
     {
@@ -15,11 +16,22 @@ public class Walker : MonoBehaviour
     {
         dot = Instantiate(dotP, new Vector3(0, 0, 0), Quaternion.identity);
         dot.transform.SetParent(container.transform);
+        r = dot.GetComponent<Renderer>();
+        // r.enabled = false;
+    }
+
+    public void Attach()
+    {
+        // r.enabled = true;
     }
 
     public void SetRandomPosition()
     {
-        dot.transform.position = new Vector3(Random.value * 20 - 10, Random.value * maxY, 0);
+        dot.transform.position = new Vector3(
+            Random.value * areaSize - areaSize / 2,
+            Random.value * areaSize,
+            Random.value * areaSize - areaSize / 2
+        );
     }
 
     public Vector3 Position
@@ -29,9 +41,16 @@ public class Walker : MonoBehaviour
 
     public void Walk()
     {
-        dot.transform.position += new Vector3(Random.value / 10 - 0.05f, -Random.value / 10, 0);
+        float dx = Random.value / 10 - 0.05f;
+        float dy = -.15f;
+        float dz = Random.value / 10 - 0.05f;
+        dot.transform.position += new Vector3(dx, dy, dz);
         if (dot.transform.position.y < 0) {
-            dot.transform.position = new Vector3(Random.value * 20 - 10, maxY, 0);
+            dot.transform.position = new Vector3(
+            Random.value * areaSize - areaSize / 2,
+            areaSize,
+            Random.value * areaSize - areaSize / 2
+        );
         }
     }
 

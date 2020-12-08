@@ -16,33 +16,68 @@ public class DLA : MonoBehaviour
         walkerContainer = GameObject.Find("Walkers");
         for (var i = 0; i < numWalkers; i++)
         {
-            Walker walker = gameObject.AddComponent<Walker>();
-            walker.Draw(dotPrefab, walkerContainer);
-            walker.SetRandomPosition();
-            walkers.Add(walker);
+            walkers.Add(CreateWalker());
         }
         treeContainer = GameObject.Find("Tree");
         Walker trunk = gameObject.AddComponent<Walker>();
         trunk.transform.position = new Vector3(0, 0, 0);
         trunk.Draw(dotPrefab, treeContainer);
+        trunk.Attach();
         tree.Add(trunk);
+    }
+
+    float DistanceBetween(Vector3 v1, Vector3 v2)
+    {
+        Vector3 heading;
+        heading.x = v1.x - v2.x;
+        heading.y = v1.y - v2.y;
+        heading.z = v1.z - v2.z;
+
+        float distance = heading.x * heading.x + heading.y * heading.y + heading.z * heading.z;
+        // float distance = Mathf.Sqrt(distanceSquared);
+        return distance;
+    }
+
+    Walker CreateWalker()
+    {
+        Walker walker = gameObject.AddComponent<Walker>();
+        walker.Draw(dotPrefab, walkerContainer);
+        walker.SetRandomPosition();
+        return walker;
     }
 
     void Update()
     {
-        for (var i = walkers.Count - 1; i >= 0; i--)
+        if (tree.Count < 100)
         {
-            Walker w = walkers[i];
-            w.Walk();
-            for (var j = tree.Count - 1; j >= 0; j--)
+            for (var i = walkers.Count - 1; i >= 0; i--)
             {
-                if (Vector3.Distance(w.Position, tree[j].Position) < .5f)
+                Walker w = walkers[i];
+                w.Walk();
+                for (var j = tree.Count - 1; j >= 0; j--)
                 {
-                    Debug.Log(j);
-                    tree.Add(w);
-                    walkers.RemoveAt(i);
-                    break;
+                    if (DistanceBetween(w.Position, tree[j].Position) < .25f)
+                    {
+                        tree.Add(w);
+                        w.Attach();
+                        walkers.RemoveAt(i);
+                        walkers.Add(CreateWalker());
+                        break;
+                    }
                 }
+                // if (w.Position.y < 0)
+                // {
+                //     Destroy(w.dot);
+                //     walkers.RemoveAt(i);
+                // }
+            }
+        }
+        else if (walkers.Count > 0)
+        {
+            for (var i = walkers.Count - 1; i >= 0; i--)
+            {
+                DestroyImmediate(walkers[i].dot, true);
+                walkers.RemoveAt(i);
             }
         }
     }
