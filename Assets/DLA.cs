@@ -34,6 +34,16 @@ public class DLA : MonoBehaviour
         {
             Walker w = walkers[i];
             w.Walk();
+            for (var j = tree.Count - 1; j >= 0; j--)
+            {
+                if (Vector3.Distance(w.Position, tree[j].Position) < .5f)
+                {
+                    Debug.Log(j);
+                    tree.Add(w);
+                    walkers.RemoveAt(i);
+                    break;
+                }
+            }
         }
     }
 }
