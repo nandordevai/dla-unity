@@ -20,9 +20,9 @@ public class DLA : MonoBehaviour
         }
         treeContainer = GameObject.Find("Tree");
         Walker trunk = gameObject.AddComponent<Walker>();
-        trunk.transform.position = new Vector3(0, 0, 0);
+        trunk.transform.position = Vector3.zero;
         trunk.Draw(dotPrefab, treeContainer);
-        trunk.Attach();
+        trunk.Attach(Vector3.zero);
         tree.Add(trunk);
     }
 
@@ -34,7 +34,6 @@ public class DLA : MonoBehaviour
         heading.z = v1.z - v2.z;
 
         float distance = heading.x * heading.x + heading.y * heading.y + heading.z * heading.z;
-        // float distance = Mathf.Sqrt(distanceSquared);
         return distance;
     }
 
@@ -48,7 +47,8 @@ public class DLA : MonoBehaviour
 
     void Update()
     {
-        if (tree.Count < 100)
+        float calcDist = Mathf.Pow(.5f, 2f);
+        if (tree.Count < 200)
         {
             for (var i = walkers.Count - 1; i >= 0; i--)
             {
@@ -56,10 +56,10 @@ public class DLA : MonoBehaviour
                 w.Walk();
                 for (var j = tree.Count - 1; j >= 0; j--)
                 {
-                    if (DistanceBetween(w.Position, tree[j].Position) < .25f)
+                    if (DistanceBetween(w.Position, tree[j].Position) < calcDist)
                     {
                         tree.Add(w);
-                        w.Attach();
+                        w.Attach(tree[j].Position);
                         walkers.RemoveAt(i);
                         walkers.Add(CreateWalker());
                         break;

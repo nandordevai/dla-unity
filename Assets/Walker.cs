@@ -5,6 +5,7 @@ using UnityEngine;
 public class Walker : MonoBehaviour
 {
     public GameObject dot;
+    public GameObject branchPrefab;
     float areaSize = 10f;
     Renderer r;
 
@@ -14,15 +15,21 @@ public class Walker : MonoBehaviour
 
     public void Draw(GameObject dotP, GameObject container)
     {
-        dot = Instantiate(dotP, new Vector3(0, 0, 0), Quaternion.identity);
+        dot = Instantiate(dotP, Vector3.zero, Quaternion.identity);
         dot.transform.SetParent(container.transform);
         r = dot.GetComponent<Renderer>();
         // r.enabled = false;
     }
 
-    public void Attach()
+    public void Attach(Vector3 toPos)
     {
-        // r.enabled = true;
+        // TODO: fix first branch
+        r.enabled = true;
+        Vector3 pos = Vector3.Lerp(toPos, Position, .5f);
+        branchPrefab = (GameObject)Resources.Load("Branch");
+        GameObject branch = Instantiate(branchPrefab);
+        branch.transform.position = pos;
+        branch.transform.up = toPos - Position;
     }
 
     public void SetRandomPosition()
