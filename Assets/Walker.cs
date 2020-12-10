@@ -17,13 +17,13 @@ public class Walker : MonoBehaviour
     {
         dot = Instantiate(dotP, Vector3.zero, Quaternion.identity);
         dot.transform.SetParent(container.transform);
+        dot.transform.position = Vector3.zero;
         r = dot.GetComponent<Renderer>();
-        // r.enabled = false;
+        r.enabled = false;
     }
 
     public void Attach(Vector3 toPos)
     {
-        // TODO: fix first branch
         r.enabled = true;
         Vector3 pos = Vector3.Lerp(toPos, Position, .5f);
         branchPrefab = (GameObject)Resources.Load("Branch");

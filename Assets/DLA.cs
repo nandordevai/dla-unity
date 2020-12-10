@@ -20,9 +20,7 @@ public class DLA : MonoBehaviour
         }
         treeContainer = GameObject.Find("Tree");
         Walker trunk = gameObject.AddComponent<Walker>();
-        trunk.transform.position = Vector3.zero;
         trunk.Draw(dotPrefab, treeContainer);
-        trunk.Attach(Vector3.zero);
         tree.Add(trunk);
     }
 
