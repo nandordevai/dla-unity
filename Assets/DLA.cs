@@ -24,7 +24,7 @@ public class DLA : MonoBehaviour
         tree.Add(trunk);
     }
 
-    float DistanceBetween(Vector3 v1, Vector3 v2)
+    float QuickDistance(Vector3 v1, Vector3 v2)
     {
         Vector3 heading;
         heading.x = v1.x - v2.x;
@@ -54,7 +54,7 @@ public class DLA : MonoBehaviour
                 w.Walk();
                 for (var j = tree.Count - 1; j >= 0; j--)
                 {
-                    if (DistanceBetween(w.Position, tree[j].Position) < calcDist)
+                    if (QuickDistance(w.Position, tree[j].Position) < calcDist)
                     {
                         tree.Add(w);
                         w.Attach(tree[j].Position);

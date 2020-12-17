@@ -52,12 +52,13 @@ public class Walker : MonoBehaviour
         float dy = -.15f;
         float dz = Random.value / 10 - 0.05f;
         dot.transform.position += new Vector3(dx, dy, dz);
-        if (dot.transform.position.y < 0) {
+        if (dot.transform.position.y < 0)
+        {
             dot.transform.position = new Vector3(
-            Random.value * areaSize - areaSize / 2,
-            areaSize,
-            Random.value * areaSize - areaSize / 2
-        );
+                Random.value * areaSize - areaSize / 2,
+                areaSize,
+                Random.value * areaSize - areaSize / 2
+            );
         }
     }
 
